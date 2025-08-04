@@ -12,7 +12,7 @@ const state = reactive({
 })
 
 onMounted(async () => {
-  const response = await axios.get(`http://localhost:8000/jobs/${jobID}`)
+  const response = await axios.get(`/api/jobs/${jobID}`)
   state.job = response.data
   state.isLoading = false
 })

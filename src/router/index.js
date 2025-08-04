@@ -23,6 +23,11 @@ const router = createRouter({
       component: SingleJobView,
     },
     {
+      path: '/jobs/:id',
+      name: 'Jobs-Page',
+      component: SingleJobView,
+    },
+    {
       path: '/:pathMatch(.*)*',
       name: ' Not-Found',
       component: NotFound,
