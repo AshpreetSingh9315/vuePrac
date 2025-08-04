@@ -1,7 +1,22 @@
 <script setup>
-defineProps({
+import { computed, ref } from 'vue'
+
+const props = defineProps({
   job: Object,
 })
+const showDescription = ref(false)
+
+const trancludatedDescription = computed(() => {
+  let description = props.job.description
+  if (!showDescription.value) {
+    description = description.substring(0, 90) + '...'
+  }
+  return description
+})
+
+const toggleDescription = () => {
+  showDescription.value = !showDescription.value
+}
 </script>
 
 <template>
@@ -12,7 +27,10 @@ defineProps({
     </div>
 
     <div class="mb-5">
-      {{ job.description }}
+      {{ trancludatedDescription }}
+      <span class="cursor-pointer text-green-500" @click="toggleDescription">{{
+        showDescription ? 'Less' : 'More'
+      }}</span>
     </div>
 
     <h3 class="text-green-500 mb-2">{{ job.salary }}</h3>
@@ -24,12 +42,12 @@ defineProps({
         <i class="fa-solid fa-location-dot text-lg"></i>
         {{ job.location }}
       </div>
-      <a
-        :href="'/job/' + job.id"
+      <RouterLink
+        :to="'jobs/' + job.id"
         class="h-[36px] bg-green-500 hover:bg-green-600 text-white px-4 py-2 rounded-lg text-center text-sm"
       >
         Read More
-      </a>
+      </RouterLink>
     </div>
   </div>
 </template>

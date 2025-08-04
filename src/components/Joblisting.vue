@@ -30,11 +30,11 @@ defineProps({
   </section>
 
   <section class="m-auto max-w-lg my-10 px-6" v-if="showButton">
-    <a
-      href="jobs.html"
+    <RouterLink
+      to="jobs"
       class="block bg-black text-white text-center py-4 px-6 rounded-xl hover:bg-gray-700"
     >
       View All Jobs
-    </a>
+    </RouterLink>
   </section>
 </template>
