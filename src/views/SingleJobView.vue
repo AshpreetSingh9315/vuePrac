@@ -1,7 +1,11 @@
 <script setup>
+import BackButton from '@/components/BackButton.vue'
+import router from '@/router'
 import axios from 'axios'
 import { reactive, onMounted } from 'vue'
 import { useRoute, RouterLink } from 'vue-router'
+import 'vue3-toastify/dist/index.css'
+import { toast } from 'vue3-toastify'
 
 const route = useRoute()
 const jobID = route.params.id
@@ -16,9 +20,25 @@ onMounted(async () => {
   state.job = response.data
   state.isLoading = false
 })
+
+const deleteJob = async () => {
+  try {
+    const confirm = window.confirm('Are Your Sure you wanted to delete!!')
+    if (confirm) {
+      await axios.delete(`/api/jobs/${jobID}`)
+      toast.success('Job Got Deleted')
+      router.push('/jobs')
+    }
+  } catch (error) {
+    console.log(error)
+    toast.error('Job Not Deleted')
+  }
+}
 </script>
 
 <template>
+  <BackButton />
+
   <section class="bg-green-50">
     <div class="container m-auto py-10 px-6">
       <div class="grid grid-cols-1 lg:grid-cols-70/30 w-full gap-6">
@@ -67,6 +87,7 @@ onMounted(async () => {
               Edit Job
             </RouterLink>
             <button
+              @click="deleteJob"
               class="bg-red-500 hover:bg-red-600 text-white font-bold py-2 px-4 rounded-full w-full mt-4 block"
             >
               Delete Job

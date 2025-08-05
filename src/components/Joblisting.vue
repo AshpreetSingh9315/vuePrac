@@ -28,6 +28,7 @@ defineProps({
 </script>
 
 <template>
+
   <section v-if="state.isLoading" class="flex justify-center items-center"><PulseLoader /></section>
   <section class="bg-green-50 px-4 py-10">
     <div class="container-xl lg:container m-auto">

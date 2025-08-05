@@ -1,9 +1,13 @@
 <script setup>
 import axios from 'axios'
-import { reactive } from 'vue'
+import { onMounted, reactive } from 'vue'
 import 'vue3-toastify/dist/index.css'
 import { toast } from 'vue3-toastify'
 import router from '@/router'
+import { useRoute } from 'vue-router'
+
+const route = useRoute()
+const jobID = route.params.id
 
 const form = reactive({
   type: 'Full-Time',
@@ -19,11 +23,31 @@ const form = reactive({
   },
 })
 
+onMounted(async () => {
+  try {
+    const response = await axios.get(`/api/jobs/${jobID}`)
+    const data = response.data
+
+    form.title = data.title || ''
+    form.description = data.description || ''
+    form.salary = data.salary || ''
+    form.location = data.location || ''
+    form.type = data.type || 'Full-Time'
+
+    form.company.name = data.company?.name || ''
+    form.company.description = data.company?.description || ''
+    form.company.contactEmail = data.company?.contactEmail || ''
+    form.company.contactPhone = data.company?.contactPhone || ''
+  } catch (error) {
+    console.log(error)
+  }
+})
+
 const handleSubmit = async () => {
   try {
-    const response = await axios.post('/api/jobs', form)
+    const response = await axios.put(`/api/jobs/${jobID}`, form)
     console.log(response.data)
-    toast('Data Submitted Succesfully !!', {
+    toast('Data Updated Succesfully !!', {
       autoClose: 1000,
     })
     router.push(`/jobs/${response.data.id}`)
@@ -38,7 +62,7 @@ const handleSubmit = async () => {
     <div class="container m-auto max-w-2xl py-24">
       <div class="bg-white px-6 py-8 mb-4 shadow-md rounded-md border m-4 md:m-0">
         <form @submit.prevent="handleSubmit">
-          <h2 class="text-3xl text-center font-semibold mb-6">Add Job</h2>
+          <h2 class="text-3xl text-center font-semibold mb-6">Edit Job</h2>
 
           <div class="mb-4">
             <label for="type" class="block text-gray-700 font-bold mb-2">Job Type</label>
@@ -177,7 +201,7 @@ const handleSubmit = async () => {
               class="bg-green-500 hover:bg-green-600 text-white font-bold py-2 px-4 rounded-full w-full focus:outline-none focus:shadow-outline"
               type="submit"
             >
-              Add Job
+              Edit Job
             </button>
           </div>
         </form>

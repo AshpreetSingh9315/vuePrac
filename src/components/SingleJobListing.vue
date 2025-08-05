@@ -20,6 +20,7 @@ const toggleDescription = () => {
 </script>
 
 <template>
+
   <div class="p-4">
     <div class="mb-6">
       <div class="text-gray-600 my-2">{{ job.type }}</div>
